@@ -6,9 +6,14 @@
 健康状态命令
 
 ```
+Linux:
 curl 'localhost:9200/_cat/health?v'
 ```
+```
+Powershell on windows:
+Invoke-RestMethod -Uri http://localhost:9200/
 
+```
 查看节点
 
 ```
@@ -30,7 +35,7 @@ curl -XPUT 'localhost:9200/customer?pretty'
 创建类型和文档
 
 ```
-curl -XPUT 'localhost:9200/customer/external/1?pretty' -d '
+curl -H "Content-Type: application/json" -XPUT 'localhost:9200/customer/external/1?pretty' -d '
 {
   "name": "John Doe"
 }'
@@ -47,7 +52,7 @@ curl -XDELETE 'localhost:9200/customer?pretty'
 修改更新索引
 
 ```
-curl -XPUT 'localhost:9200/customer/external/1?pretty' -d '
+curl -H "Content-Type: application/json"  -XPUT 'localhost:9200/customer/external/1?pretty' -d '
 {
   "name": "John Doe"
 }'
@@ -62,7 +67,7 @@ curl -XDELETE 'localhost:9200/customer/external/2?pretty'
 
 创建
 ```
-curl -XPOST 'localhost:9200/customer/external/_bulk?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/customer/external/_bulk?pretty' -d '
 {"index":{"_id":"1"}}
 {"name": "John Doe" }
 {"index":{"_id":"2"}}
@@ -71,7 +76,7 @@ curl -XPOST 'localhost:9200/customer/external/_bulk?pretty' -d '
 
 更新和删除
 ```
-curl -XPOST 'localhost:9200/customer/external/_bulk?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/customer/external/_bulk?pretty' -d '
 {"update":{"_id":"1"}}
 {"doc": { "name": "John Doe becomes Jane Doe" } }
 {"delete":{"_id":"2"}}
@@ -79,7 +84,7 @@ curl -XPOST 'localhost:9200/customer/external/_bulk?pretty' -d '
 
 从文件导入数据
 ```
-curl -XPOST 'localhost:9200/bank/account/_bulk?pretty' --data-binary "@accounts.json"
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/account/_bulk?pretty' --data-binary "@accounts.json"
 ```
 搜索
 ```
@@ -97,7 +102,7 @@ _score and max_score - ignore these fields for now
 
 分页
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match_all": {} },
   "from": 10,
@@ -107,7 +112,7 @@ curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 
 排序
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match_all": {} },
   "sort": { "balance": { "order": "desc" } }
@@ -115,7 +120,7 @@ curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 ```
 只返回结果里指定的字段内容
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match_all": {} },
   "_source": ["account_number", "balance"]
@@ -123,7 +128,7 @@ curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 ```
 匹配 mill 或 lane
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match": { "address": "mill lane" } }
 }'
@@ -131,14 +136,14 @@ curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 
 匹配 mill lane
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match_phrase": { "address": "mill lane" } }
 }'```
 
 匹配 mill 和 lane
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": {
     "bool": {
@@ -152,7 +157,7 @@ curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 
 匹配 mill 或 lane
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": {
     "bool": {
@@ -167,7 +172,7 @@ curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 
 不能匹配 mill 和 lane
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": {
     "bool": {
@@ -181,7 +186,7 @@ curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 ```
 bool可以同时有多个条件
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": {
     "bool": {
@@ -198,7 +203,7 @@ curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 
 bool下可以通过filter来对指定字段在指定范围内进行过滤
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": {
     "bool": {
@@ -217,7 +222,7 @@ curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 ```
 聚合
 ```
-curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
+curl  -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "size": 0,
   "aggs": {
