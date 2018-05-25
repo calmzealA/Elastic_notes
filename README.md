@@ -1,10 +1,16 @@
 # Elastic_notes
-Calmzeal's ElasticSearch 笔记
+Calmzeal's Elastic Search 笔记
+Elastic Search 安装，配置，日常使用实践笔记。
 
-TODO：
-1. 安装ElasticSearch
-2. ElasticHead安装与使用
-3. 集群搭建配置
-4. 面向插入的配置优化
-5. 代码片段
-6. kafka + Elastic demo
+---
+
+# TODO
+- [x] ~~安装ElasticSearch~~
+- [x] ~~快速入门~~
+- [ ] ElasticHead安装与使用
+- [ ] 集群搭建配置
+- [ ] 代码片段
+- [ ] kafka + Elastic demo
+
+
+---
